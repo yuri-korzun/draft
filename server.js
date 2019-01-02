@@ -22,26 +22,24 @@ const HTTP_STATUSES = {
 let id = 0;
 let lastData;
 
-async function checkStorage() {
+async function getStorageData() {
   return await readFile(path.join(storagePath, STORAGE_FILE));
 }
 
-checkStorage().then(buffer => {
-  lastData = JSON.parse(buffer.toString());
-  id = last.files.length;
-  console.log('resp', last.files);
-}).catch(() => {
-  lastData = {"files": []};
-  writeFile(path.join(storagePath, STORAGE_FILE), JSON.stringify(lastData));
-});
+getStorageData()
+  .then(buffer => {
+    lastData = JSON.parse(buffer.toString());
+    console.log('ha', lastData);
+    id = lastData.files.length;
+    console.log('resp', lastData.files);
+  })
+  .catch(() => {
+    console.log('fail');
+    lastData = {"files": []};
+    writeFile(path.join(storagePath, STORAGE_FILE), JSON.stringify(lastData));
+  });
 
 server.post('/upload', async (req, res) => {
-  console.log('2');
-
-  /*res.writeHead(HTTP_STATUSES.OK, {'Content-Type': 'application/json'});
-  res.end(JSON.stringify({status: 'ok'}));*/
-
-
   const form = new IncomingForm();
 
   form.on('file', (field, file) => {
@@ -49,14 +47,30 @@ server.post('/upload', async (req, res) => {
     fs.createReadStream(file.path).pipe(fs.createWriteStream(path.join(storagePath, newFileName)));
     lastData.files.push(newFileName);
     writeFile(path.join(storagePath, STORAGE_FILE), JSON.stringify(lastData));
-    id ++;
+    id++;
     console.log('id', id);
   });
+
   form.on('end', () => {
     res.writeHead(HTTP_STATUSES.OK, {'Content-Type': 'application/json'});
     res.end(JSON.stringify({status: 'ok'}));
   });
+
   form.parse(req);
+});
+
+server.get('/images', (req, res) => {
+  getStorageData().then(buffer => {
+    const lastData = JSON.parse(buffer.toString());
+    const fileNames = lastData.files;
+
+    res.json(fileNames);
+  });
+});
+
+server.get(/^((?!api\/).)*$/, (req, res) => {
+  console.log('req url', req.url);
+  res.sendFile(path.join(__dirname, req.url));
 });
 
 server.listen(8000, () => {
