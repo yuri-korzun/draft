@@ -37,7 +37,7 @@ export class DialogComponent {
   closeDialog() {
     // if everything was uploaded already, just close the dialog
     if (this.uploadSuccessful) {
-      return this.dialogRef.close();
+      return this.dialogRef.close(this.uploadSuccessful);
     }
 
     // set the component state to "uploading"

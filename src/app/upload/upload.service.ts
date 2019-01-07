@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpRequest, HttpEventType, HttpResponse} from '@angular/common/http';
 import {Subject, Observable} from 'rxjs';
+import {environment} from '../../environments/environment';
 
 
-const url = 'api/upload';
+const url = environment.production ? 'upload' : 'api/upload';
 
 @Injectable()
 export class UploadService {

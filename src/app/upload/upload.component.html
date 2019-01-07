@@ -1,1 +1,13 @@
-<button mat-raised-button (click)="openUploadDialog()">Upload</button>
+<header>
+  <img src="/assets/logo.png" alt="" class="logo">
+</header>
+
+<section class="feed">
+    <div class="image" *ngFor="let image of images">
+    <img [src]="image" alt="">
+  </div>
+</section>
+
+<section class="footer">
+  <button mat-raised-button (click)="openUploadDialog()">Upload new photo</button>
+</section>
