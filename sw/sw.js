@@ -1,9 +1,12 @@
 (() => {
   const CACHE_NAME = 'static-cache';
   const urlToCache = [
-    '.',
     'index.html',
-    'favicon.ico'
+    'favicon.ico',
+    'main.js',
+    'polyfills.js',
+    'runtime.js',
+    'styles.css'
   ];
 
   self.addEventListener('install', event => {
