@@ -4,9 +4,14 @@
     'index.html',
     'favicon.ico',
     'main.js',
+    'custom.js',
     'polyfills.js',
     'runtime.js',
     'styles.css'
+  ];
+
+  const notStaticUrls = [
+    'images'
   ];
 
   self.addEventListener('install', event => {
@@ -15,9 +20,15 @@
   });
 
   self.addEventListener('fetch', event => {
+    const relativeUrl = event.request.url.replace(event.request.referrer, '');
+
     if (event.request.method !=='POST') {
-      event.respondWith(
-        caches.match(event.request).then(response => response || fetchAndCache(event.request)))
+      if (navigator.onLine && notStaticUrls.includes(relativeUrl)) {
+        return fetchAndCache(event.request);
+      } else {
+        event.respondWith(
+          caches.match(event.request).then(response => response || fetchAndCache(event.request)))
+      }
     }
   });
 
