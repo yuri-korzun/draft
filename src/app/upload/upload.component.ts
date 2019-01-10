@@ -22,7 +22,7 @@ export class UploadComponent {
   }
 
   private getImageName (name: string) {
-      return `${this.apiUrl}storage/${name}`
+      return encodeURI(`${this.apiUrl}storage/${name}`);
   }
 
   public openUploadDialog() {

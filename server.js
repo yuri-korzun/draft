@@ -75,8 +75,8 @@ server.get('/last-image', (req, res) => {
 });
 
 server.get(/^((?!api\/).)*$/, (req, res) => {
-  console.log('req url', req.url);
-  res.sendFile(path.join(__dirname, req.url));
+  console.log('req url', decodeURI(req.url));
+  res.sendFile(path.join(__dirname, decodeURI(req.url)));
 });
 
 server.listen(8000, () => {

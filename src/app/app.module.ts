@@ -4,14 +4,12 @@ import {AppComponent} from './app.component';
 import {UploadModule} from './upload/upload.module';
 import {RouterModule} from '@angular/router';
 import {UploadComponent} from './upload/upload.component';
-import {AdminComponent} from './admin/admin.component';
 import {HttpService} from './services/http.service';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AdminComponent
+    AppComponent
   ],
   imports: [
     UploadModule,
@@ -21,10 +19,6 @@ import {HttpService} from './services/http.service';
         {
           path: '',
           component: UploadComponent
-        },
-        {
-          path: 'admin',
-          component: AdminComponent
         }
       ],
       {
